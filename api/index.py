@@ -4,6 +4,7 @@ from pymongo import MongoClient
 import os
 
 
+client = MongoClient(os.getenv("MONGODB_URI"))
 
 app = Flask(__name__)
 
@@ -14,7 +15,6 @@ def home():
 @app.route('/data')
 def get_data():
     name = request.args.get('name')
-    client = MongoClient(os.getenv("MONGODB_URI"))
     db = client['ratings_db']
     data_cursor = db['rating'].find({"username": name})
 
