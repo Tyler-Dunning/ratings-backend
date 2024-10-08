@@ -1,13 +1,10 @@
-from flask import Flask
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
+from flask import Flask, jsonify, request
+from pymongo import MongoClient
 # importing os module for environment variables
 import os
-# importing necessary functions from dotenv library
-from dotenv import load_dotenv, dotenv_values 
-# loading variables from .env file
-load_dotenv() 
 
+client = MongoClient(os.getenv("MONGODB_URI"))
+db = client['ratings_db']
 
 
 app = Flask(__name__)
@@ -16,14 +13,13 @@ app = Flask(__name__)
 def home():
     return os.getenv("MY_KEY")
 
-uri = f'mongodb+srv://tdunning111:{ os.getenv("MY_KEY") }@ratings-cluster.1rltz.mongodb.net/?retryWrites=true&w=majority&appName=Ratings-Cluster'
+@app.route('/data')
+def get_data():
+    name = request.args.get('name')
+    data = db['rating'].find_one({"username:": name}, {"_id": 0})
 
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
-
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+    if data:
+        return jsonify(data)
+    else:
+        return jsonify({"error": "No data found"})
+    
