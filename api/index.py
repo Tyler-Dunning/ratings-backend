@@ -23,3 +23,6 @@ def get_data():
     else:
         return jsonify({"error": "No data found"})
     
+
+if __name__ == '__main__':
+    app.run()
