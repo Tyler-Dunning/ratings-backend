@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return os.getenv("MY_KEY")
+    return "yo"
 
 @app.route('/data')
 def get_data():
