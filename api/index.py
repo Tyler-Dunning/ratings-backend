@@ -16,7 +16,7 @@ def home():
 @app.route('/data')
 def get_data():
     name = request.args.get('name')
-    data_cursor = db['rating'].find({"username": name})
+    data_cursor = db['rating'].find({"num_stars": name})
 
     data_list = list(data_cursor)
 
