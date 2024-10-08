@@ -22,12 +22,10 @@ def get_data():
         return jsonify({"error": "Database connection failed"})
     
     name = request.args.get('name')
-    data_cursor = db['rating'].find({"username": name})
+    data = db['rating'].find_one({"username": name})
 
-    data_list = list(data_cursor)
-
-    if data_list:
-        return jsonify(data_list)
+    if data:
+        return jsonify(data)
     else:
         return jsonify({"error": "No data found"})
     
