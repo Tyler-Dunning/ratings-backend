@@ -27,8 +27,11 @@ def get_data():
 @app.route('/postReview', methods=['POST'])
 def post_data():
     data = request.get_json()
-    result = db['rating'].insert_one(data)
-    return jsonify({"message": "Document inserted"})
+    try:
+        db['rating'].insert_one(data)
+        return jsonify({"message": "Document inserted"})
+    except:
+        return jsonify({"error": "Failed to insert"}) 
 
 
 
