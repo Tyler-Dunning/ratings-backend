@@ -16,7 +16,7 @@ def home():
 @app.route('/data')
 def get_data():
     name = request.args.get('name')
-    data_cursor = db['rating'].find({"num_stars": name})
+    data_cursor = db['rating'].find({})
 
     data_list = list(data_cursor)
 
@@ -25,6 +25,3 @@ def get_data():
     else:
         return jsonify({"error": "No data found"})
     
-
-if __name__ == '__main__':
-    app.run()
