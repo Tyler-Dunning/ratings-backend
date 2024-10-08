@@ -3,8 +3,7 @@ from pymongo import MongoClient
 # importing os module for environment variables
 import os
 
-client = MongoClient("mongodb+srv://tdunning111:M4VgeWhq5uu6aUJ0@ratings-cluster.1rltz.mongodb.net/?retryWrites=true&w=majority&appName=Ratings-Cluster'"
-)
+client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['ratings_db']
 
 
