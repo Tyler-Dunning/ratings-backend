@@ -16,7 +16,7 @@ def home():
 @app.route('/data')
 def get_data():
     name = request.args.get('name')
-    data = db['rating'].find_one({"username:": name})
+    data = db['rating'].find({"username": name})
 
     if data:
         return jsonify(data)
