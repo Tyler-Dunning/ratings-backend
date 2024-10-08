@@ -8,6 +8,7 @@ try:
     db = client['ratings_db']
 except Exception as e:
     print(f"Error connecting to db: {e}")
+    db = None
 
 app = Flask(__name__)
 
@@ -17,6 +18,9 @@ def home():
 
 @app.route('/data')
 def get_data():
+    if db is None:
+        return jsonify({"error": "Database connection failed"})
+    
     name = request.args.get('name')
     data_cursor = db['rating'].find({"username": name})
 
