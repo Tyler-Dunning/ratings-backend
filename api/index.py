@@ -16,10 +16,12 @@ def home():
 @app.route('/data')
 def get_data():
     name = request.args.get('name')
-    data = db['rating'].find({"username": name})
+    data_cursor = db['rating'].find({"username": name})
 
-    if data:
-        return jsonify(data)
+    data_list = list(data_cursor)
+
+    if data_list:
+        return jsonify(data_list)
     else:
         return jsonify({"error": "No data found"})
     
