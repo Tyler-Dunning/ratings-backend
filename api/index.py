@@ -3,12 +3,8 @@ from pymongo import MongoClient
 # importing os module for environment variables
 import os
 
-try:
-    client = MongoClient(os.getenv("MONGODB_URI"))
-    db = client['ratings_db']
-except Exception as e:
-    print(f"Error connecting to db: {e}")
-    db = None
+client = MongoClient(os.getenv("MONGODB_URI"))
+db = client['ratings_db']
 
 app = Flask(__name__)
 
@@ -18,14 +14,21 @@ def home():
 
 @app.route('/data')
 def get_data():
-    if db is None:
-        return jsonify({"error": "Database connection failed"})
-    
     name = request.args.get('name')
-    data = db['rating'].find_one({"username": name}, {"_id": 0})
+    data_cursor = db['rating'].find({"username": name}, {"_id": 0})
+
+    data = list(data_cursor)
 
     if data:
         return jsonify(data)
     else:
         return jsonify({"error": "No data found"})
     
+@app.route('/postReview', methods=['POST'])
+def post_data():
+    data = request.get_json()
+    result = db['rating'].insert_one(data)
+    return jsonify({"message": "Document inserted"})
+
+
+
