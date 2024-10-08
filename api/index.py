@@ -22,7 +22,7 @@ def get_data():
         return jsonify({"error": "Database connection failed"})
     
     name = request.args.get('name')
-    data = db['rating'].find_one({"username": name})
+    data = db['rating'].find_one({"username": name}, {"_id": 0})
 
     if data:
         return jsonify(data)
