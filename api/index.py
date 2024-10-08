@@ -3,9 +3,11 @@ from pymongo import MongoClient
 # importing os module for environment variables
 import os
 
-
-client = MongoClient(os.getenv("MONGODB_URI"))
-db = client['ratings_db']
+try:
+    client = MongoClient(os.getenv("MONGODB_URI"))
+    db = client['ratings_db']
+except Exception as e:
+    print(f"Error connecting to db: {e}")
 
 app = Flask(__name__)
 
